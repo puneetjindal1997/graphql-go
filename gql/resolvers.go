@@ -1,13 +1,14 @@
 package gql
 
 import (
-	"github.com/bradford-hamilton/go-graphql-api/postgres"
+	"graphql-go/postgres"
+
 	"github.com/graphql-go/graphql"
 )
 
 // Resolver struct holds a connection to our database
 type Resolver struct {
-	db *postgres.Db
+	db *postgres.DatabaseInit
 }
 
 // UserResolver resolves our user query through a db call to GetUserByName

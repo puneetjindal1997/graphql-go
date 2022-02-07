@@ -1,7 +1,8 @@
 package gql
 
 import (
-	"github.com/bradford-hamilton/go-graphql-api/postgres"
+	"graphql-go/postgres"
+
 	"github.com/graphql-go/graphql"
 )
 
@@ -11,7 +12,7 @@ type Root struct {
 }
 
 // NewRoot returns base query type. This is where we add all the base queries
-func NewRoot(db *postgres.Db) *Root {
+func NewRoot(db *postgres.DatabaseInit) *Root {
 	// Create a resolver holding our databse. Resolver can be found in resolvers.go
 	resolver := Resolver{db: db}
 

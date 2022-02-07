@@ -5,9 +5,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/bradford-hamilton/go-graphql-api/gql"
-	"github.com/bradford-hamilton/go-graphql-api/postgres"
-	"github.com/bradford-hamilton/go-graphql-api/server"
+	"graphql-go/gql"
+
+	"graphql-go/postgres"
+	"graphql-go/server"
+
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
@@ -17,20 +19,19 @@ import (
 func main() {
 	// Initialize our api and return a pointer to our router for http.ListenAndServe
 	// and a pointer to our db to defer its closing when main() is finished
-	router, db := initializeAPI()
-	defer db.Close()
+	router := initializeAPI()
 
 	// Listen on port 4000 and if there's an error log it and exit
 	log.Fatal(http.ListenAndServe(":4000", router))
 }
 
-func initializeAPI() (*chi.Mux, *postgres.Db) {
+func initializeAPI() *chi.Mux {
 	// Create a new router
 	router := chi.NewRouter()
 
 	// Create a new connection to our pg database
 	db, err := postgres.New(
-		postgres.ConnString("localhost", 5432, "postgres", "go_graphql_db"),
+		postgres.ConnString("localhost", 5432, "postgres", "go_graphql_db", "root"),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -64,5 +65,5 @@ func initializeAPI() (*chi.Mux, *postgres.Db) {
 	// Create the graphql route with a Server method to handle it
 	router.Post("/graphql", s.GraphQL())
 
-	return router, db
+	return router
 }
